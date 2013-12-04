@@ -62,6 +62,7 @@
                 grid = $("#grid").kendoGrid(
     {
         filterable: true,
+        sortable:true,
         dataSource: dataSource,
         columns: [
                     "name", "city"
@@ -70,10 +71,6 @@
             }
 
         }
-
-
-
-
         );
 
         $(function () {
