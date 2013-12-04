@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Kendo UI Test Page</title>
+    <link href="http://cdn.kendostatic.com/2013.2.918/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="http://cdn.kendostatic.com/2013.2.918/styles/kendo.default.min.css" rel="stylesheet" />
+    <link href="http://cdn.kendostatic.com/2013.2.918/styles/kendo.dataviz.min.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://cdn.kendostatic.com/2013.2.918/js/kendo.all.min.js"></script>
+    <script src="https://petproj.azure-mobile.net/client/MobileServices.Web-1.0.0.min.js"></script>
+</head>
+<body>
+
+
+    <div id="app"></div>
+
+
+    <script id="details" type="text/x-kendo-template">
+        Details page
+    </script>
+    <script id="gridView" type="text/x-kendo-template">
+        <button data-bind="click: go">Click me</button>
+        <div id="grid">
+        </div>
+    </script>
+
+    <script>
+        var grid;
+        var router = new kendo.Router();
+        var layout = new kendo.Layout("<section id='content'></section>")
+        var model = kendo.observable({
+            foo: "World",
+            go: function () {
+                router.navigate("details");
+
+            }
+        });
+
+
+        var details = new kendo.View('details');
+        var gridView = new kendo.View('gridView', { model: model });
+
+
+
+
+
+        router.route("details", function () {
+            layout.render($("#app"));
+            layout.showIn("#content", details);
+        });
+
+        router.route("/", function () {
+            layout.render($("#app"));
+            layout.showIn("#content", gridView);
+            var baseUrl = "https://petproj.azure-mobile.net/tables/games/";
+            var dataSource = [
+                { name: "John", city: "Atlanta" },
+                { name: "Mike", city: "Boston" },
+                { name: "James", city: "Atlanta" },
+
+            ];
+
+            if (!grid) {
+                grid = $("#grid").kendoGrid(
+    {
+        filterable: true,
+        dataSource: dataSource,
+        columns: [
+                    "name", "city"
+        ]
+    }).data("kendoGrid");
+            }
+
+        }
+
+
+
+
+        );
+
+        $(function () {
+            router.start();
+        });
+    </script>
+
+
+
+
+    <script type="text/x-kendoui-template" id="detailsTemplate">
+        <h1 data-bind="text: name"></h1>
+        <span data-bind="text: developer"></span>
+    </script>
+
+</body>
+</html>
